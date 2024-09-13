@@ -167,10 +167,11 @@ export function tableContentToNodes<
   styleSchema: StyleSchema
 ): Node[] {
   const rowNodes: Node[] = [];
-
-  for (const row of tableContent.rows) {
+  for (let rowIndex = 0; rowIndex < tableContent.rows.length; rowIndex++) {
+    const row = tableContent.rows[rowIndex];
     const columnNodes: Node[] = [];
-    for (const cell of row.cells) {
+    for (let cellIndex = 0; cellIndex < row.cells.length; cellIndex++) {
+      const cell = row.cells[cellIndex];
       let pNode: Node;
       if (!cell.content || cell.content.length === 0) {
         pNode = schema.nodes["tableParagraph"].create({});
@@ -185,11 +186,16 @@ export function tableContentToNodes<
         pNode = schema.nodes["tableParagraph"].create({}, textNodes);
       }
 
-      const cellNode = schema.nodes["tableCell"].create(
+      const isHeaderCell =
+        (tableContent.hasRowHeader && rowIndex === 0) ||
+        (tableContent.hasColumnHeader && cellIndex === 0);
+
+      const cellType = isHeaderCell ? "tableHeader" : "tableCell";
+      const cellNode = schema.nodes[cellType].create(
         {
           colwidth: [cell.width] || null,
-          colspan: cell.colspan || 1, 
-          rowspan: cell.rowspan || 1
+          colspan: cell.colspan || 1,
+          rowspan: cell.rowspan || 1,
         },
         pNode
       );
@@ -276,7 +282,7 @@ export function blockToNode(
 }
 
 /**
- * Converts an internal (prosemirror) table node contentto a BlockNote Tablecontent
+ * Converts an internal (prosemirror) table node content to a BlockNote TableContent
  */
 function contentNodeToTableContent<
   I extends InlineContentSchema,
@@ -285,14 +291,26 @@ function contentNodeToTableContent<
   const ret: TableContent<I, S> = {
     type: "tableContent",
     rows: [],
+    hasRowHeader: true,
+    hasColumnHeader: true,
   };
 
-  contentNode.content.forEach((rowNode) => {
+  contentNode.content.forEach((rowNode, rowIndex) => {
     const row: TableContent<I, S>["rows"][0] = {
       cells: [],
     };
 
-    rowNode.content.forEach((cellNode) => {
+    rowNode.content.forEach((cellNode, cellIndex) => {
+      const isHeader = cellNode.type.name === "tableHeader";
+
+      if (rowIndex === 0 && !isHeader) {
+        ret.hasRowHeader = false;
+      }
+
+      if (cellIndex === 0 && !isHeader) {
+        ret.hasColumnHeader = false;
+      }
+
       row.cells.push({
         content: contentNodeToInlineContent(
           cellNode.firstChild!,
@@ -303,8 +321,8 @@ function contentNodeToTableContent<
           cellNode.attrs.colwidth !== null
             ? cellNode.attrs.colwidth[0]
             : undefined,
-          colspan: cellNode.attrs.colspan || 1,
-          rowspan: cellNode.attrs.rowspan || 1
+        colspan: cellNode.attrs.colspan || 1,
+        rowspan: cellNode.attrs.rowspan || 1,
       });
     });
 

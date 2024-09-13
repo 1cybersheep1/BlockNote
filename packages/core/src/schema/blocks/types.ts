@@ -147,6 +147,8 @@ export type TableContent<
   S extends StyleSchema = StyleSchema
 > = {
   type: "tableContent";
+  hasRowHeader?: boolean;
+  hasColumnHeader?: boolean;
   rows: {
     cells: CellContent<I, S>[];
   }[];
@@ -232,6 +234,8 @@ export type PartialTableContent<
   S extends StyleSchema = StyleSchema
 > = {
   type: "tableContent";
+  hasRowHeader?: boolean;
+  hasColumnHeader?: boolean;
   rows: {
     cells: PartialCellContent<I, S>[];
   }[];

@@ -20,6 +20,10 @@ import { FileRenameButton } from "./DefaultButtons/FileRenameButton";
 import { FileDownloadButton } from "./DefaultButtons/FileDownloadButton";
 import { FilePreviewButton } from "./DefaultButtons/FilePreviewButton";
 import { FileDeleteButton } from "./DefaultButtons/FileDeleteButton";
+import {
+  TableRowHeaderButton,
+  TableColumnHeaderButton,
+} from "./DefaultButtons/TableHeaderButtons";
 
 export const getFormattingToolbarItems = (
   blockTypeSelectItems?: BlockTypeSelectItem[]
@@ -45,6 +49,8 @@ export const getFormattingToolbarItems = (
   <NestBlockButton key={"nestBlockButton"} />,
   <UnnestBlockButton key={"unnestBlockButton"} />,
   <CreateLinkButton key={"createLinkButton"} />,
+  <TableRowHeaderButton key={"tableRowHeaderButton"} />,
+  <TableColumnHeaderButton key={"tableColumnHeaderButton"} />,
 ];
 
 // TODO: props.blockTypeSelectItems should only be available if no children

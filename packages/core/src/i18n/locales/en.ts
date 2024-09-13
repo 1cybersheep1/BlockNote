@@ -257,6 +257,12 @@ export const en = {
     align_justify: {
       tooltip: "Justify text",
     },
+    table_row_header: {
+      tooltip: "Row header",
+    },
+    table_column_header: {
+      tooltip: "Column header",
+    },
   },
   file_panel: {
     upload: {
