@@ -263,6 +263,12 @@ export const en = {
     table_column_header: {
       tooltip: "Column header",
     },
+    table_merge_cells: {
+      tooltip: "Merge cells",
+    },
+    table_split_cells: {
+      tooltip: "Split cells",
+    },
   },
   file_panel: {
     upload: {

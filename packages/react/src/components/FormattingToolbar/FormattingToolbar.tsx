@@ -24,6 +24,10 @@ import {
   TableRowHeaderButton,
   TableColumnHeaderButton,
 } from "./DefaultButtons/TableHeaderButtons";
+import {
+  TableCellMergeButton,
+  TableCellSplitButton,
+} from "./DefaultButtons/TableMergeCellsButtons";
 
 export const getFormattingToolbarItems = (
   blockTypeSelectItems?: BlockTypeSelectItem[]
@@ -51,6 +55,8 @@ export const getFormattingToolbarItems = (
   <CreateLinkButton key={"createLinkButton"} />,
   <TableRowHeaderButton key={"tableRowHeaderButton"} />,
   <TableColumnHeaderButton key={"tableColumnHeaderButton"} />,
+  <TableCellMergeButton key={"tableCellMergeButton"} />,
+  <TableCellSplitButton key={"tableCellSplitButton"} />,
 ];
 
 // TODO: props.blockTypeSelectItems should only be available if no children
