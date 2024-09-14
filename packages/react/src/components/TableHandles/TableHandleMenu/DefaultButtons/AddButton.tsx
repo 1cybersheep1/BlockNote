@@ -4,7 +4,6 @@ import {
   DefaultStyleSchema,
   InlineContentSchema,
   StyleSchema,
-  TableContent,
 } from "@blocknote/core";
 
 import { useComponentsContext } from "../../../../editor/ComponentsContext";
@@ -30,23 +29,11 @@ export const AddRowButton = <
   return (
     <Components.Generic.Menu.Item
       onClick={() => {
-        const emptyCol = props.block.content.rows[props.index].cells.map(
-          () => ({
-            content: [],
-          })
-        );
-        const rows = [...props.block.content.rows];
-        rows.splice(props.index + (props.side === "below" ? 1 : 0), 0, {
-          cells: emptyCol,
-        });
-
-        editor.updateBlock(props.block, {
-          type: "table",
-          content: {
-            type: "tableContent",
-            rows,
-          },
-        });
+        if (props.side === "above") {
+          editor._tiptapEditor.commands.addRowBefore();
+        } else {
+          editor._tiptapEditor.commands.addRowAfter();
+        }
       }}>
       {dict.table_handle[`add_${props.side}_menuitem`]}
     </Components.Generic.Menu.Item>
@@ -71,21 +58,11 @@ export const AddColumnButton = <
   return (
     <Components.Generic.Menu.Item
       onClick={() => {
-        const content: TableContent<I, S> = {
-          type: "tableContent",
-          rows: props.block.content.rows.map((row) => {
-            const cells = [...row.cells];
-            cells.splice(props.index + (props.side === "right" ? 1 : 0), 0, {
-              content: [],
-            });
-            return { cells };
-          }),
-        };
-
-        editor.updateBlock(props.block, {
-          type: "table",
-          content: content,
-        });
+        if (props.side === "left") {
+          editor._tiptapEditor.commands.addColumnBefore();
+        } else {
+          editor._tiptapEditor.commands.addColumnAfter();
+        }
       }}>
       {dict.table_handle[`add_${props.side}_menuitem`]}
     </Components.Generic.Menu.Item>

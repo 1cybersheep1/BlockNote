@@ -1,5 +1,12 @@
-import { callOrReturn, Extension, getExtensionField } from "@tiptap/core";
-import { columnResizing, tableEditing } from "prosemirror-tables";
+import { Extension, callOrReturn, getExtensionField } from "@tiptap/core";
+import {
+  columnResizing,
+  tableEditing,
+  addRowAfter,
+  addRowBefore,
+  addColumnBefore,
+  addColumnAfter,
+} from "prosemirror-tables";
 
 export const TableExtension = Extension.create({
   name: "BlockNoteTableExtension",
@@ -11,6 +18,32 @@ export const TableExtension = Extension.create({
       }),
       tableEditing(),
     ];
+  },
+
+  addCommands() {
+    return {
+      // Wrap each command to return the correct Command type
+      addRowAfter() {
+        return ({ state, dispatch }) => {
+          return addRowAfter(state, dispatch);
+        };
+      },
+      addRowBefore:
+        () =>
+        ({ state, dispatch }) => {
+          return addRowBefore(state, dispatch);
+        },
+      addColumnBefore:
+        () =>
+        ({ state, dispatch }) => {
+          return addColumnBefore(state, dispatch);
+        },
+      addColumnAfter:
+        () =>
+        ({ state, dispatch }) => {
+          return addColumnAfter(state, dispatch);
+        },
+    };
   },
 
   addKeyboardShortcuts() {
@@ -43,6 +76,19 @@ export const TableExtension = Extension.create({
           selectionIsAtStartOfNode &&
           selectionIsInTableParagraphNode
         );
+      },
+      // Keyboard shortcuts for adding rows and columns
+      "Alt-ArrowDown": () => {
+        return this.editor.commands.addRowAfter();
+      },
+      "Alt-ArrowUp": () => {
+        return this.editor.commands.addRowBefore();
+      },
+      "Alt-ArrowLeft": () => {
+        return this.editor.commands.addColumnBefore();
+      },
+      "Alt-ArrowRight": () => {
+        return this.editor.commands.addColumnAfter();
       },
     };
   },
