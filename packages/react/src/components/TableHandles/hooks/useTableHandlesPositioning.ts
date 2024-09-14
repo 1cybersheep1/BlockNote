@@ -98,7 +98,7 @@ function useTableHandlePosition(
         display: "flex",
         ...styles,
         ...floatingStyles,
-        zIndex: 10000,
+        zIndex: 2000,
       },
     }),
     [floatingStyles, isMounted, refs.setFloating, styles]
