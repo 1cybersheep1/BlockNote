@@ -56,7 +56,7 @@ export const TableRowHeaderButton = () => {
     <Components.FormattingToolbar.Button
       className={"bn-button"}
       onClick={() => toggleRowHeader()}
-      isSelected={tableBlock.props.hasRowHeader}
+      isSelected={tableBlock.content.hasRowHeader}
       label={dict.formatting_toolbar.table_row_header.tooltip}
       mainTooltip={dict.formatting_toolbar.table_row_header.tooltip}
       icon={<RiLayoutRowFill />}
@@ -108,7 +108,7 @@ export const TableColumnHeaderButton = () => {
     <Components.FormattingToolbar.Button
       className={"bn-button"}
       onClick={() => toggleColumnHeader()}
-      isSelected={tableBlock.props.hasColumnHeader}
+      isSelected={tableBlock.content.hasColumnHeader}
       label={dict.formatting_toolbar.table_column_header.tooltip}
       mainTooltip={dict.formatting_toolbar.table_column_header.tooltip}
       icon={<RiLayoutColumnFill />}
